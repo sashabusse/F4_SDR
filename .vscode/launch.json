@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Cortex-Debug",
+            "type": "cortex-debug",
+            "cwd": "${workspaceFolder}",
+            "request": "launch",
+            "svdFile": "STM32F411.svd",
+            "executable": "build/f4_sdr.elf",
+            "servertype": "jlink",
+            "device": "STM32F411CE",
+            "interface": "swd"
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "nanosdr.h": "c",
+        "*.inc": "cpp",
+        "usbcfg.h": "c"
+    }
+}
