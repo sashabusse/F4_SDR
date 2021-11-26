@@ -1,0 +1,5 @@
+r
+loadfile build/f4_sdr.hex
+r
+g
+

@@ -5,7 +5,7 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16
+  USE_OPT = -O0 -ggdb -fomit-frame-pointer -falign-functions=16
 endif
 
 # C specific options here (added to USE_OPT).
@@ -116,7 +116,7 @@ include $(CHIBIOS)/os/test/test.mk
 include $(CHIBIOS)/test/rt/rt_test.mk
 include $(CHIBIOS)/test/oslib/oslib_test.mk
 # my custom files 
-include ./CMSIS/CMSIS.mk
+# include ./CMSIS/CMSIS.mk # uncomment also define if want to compile successfuly
 
 # Define linker script file here
 LDSCRIPT= $(STARTUPLD)/STM32F411xE.ld
@@ -126,10 +126,11 @@ LDSCRIPT= $(STARTUPLD)/STM32F411xE.ld
 CSRC = $(ALLCSRC) \
        $(TESTSRC) \
        main.c \
-       dsp.c \
-       display.c \
-       ili9341.c \
-       usbcfg.c
+       ili9341/ili9341.c \
+       ili9341/ili9341_hw.c \
+       ili9341/ili9341_gfx.c \
+       usb_shell/usb_shell.c \
+       usb_shell/usbcfg.c 
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -142,7 +143,7 @@ ASMSRC = $(ALLASMSRC)
 ASMXSRC = $(ALLXASMSRC)
 
 # Inclusion directories.
-INCDIR = $(CONFDIR) $(ALLINC) $(TESTINC)
+INCDIR = $(CONFDIR) $(ALLINC) $(TESTINC) ili9341 usb_shell
 
 # Define C warning options here.
 CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes
@@ -159,7 +160,7 @@ CPPWARN = -Wall -Wextra -Wundef
 #
 
 # List all user C define here, like -D_DEBUG=1
-UDEFS = -DARM_MATH_CM4 -D__FPU_PRESENT
+UDEFS = -DARM_MATH_CM4 #-D__FPU_PRESENT
 
 # Define ASM defines here
 UADEFS =
