@@ -92,7 +92,7 @@ MCU  = cortex-m4
 CHIBIOS  := ChibiOS
 CONFDIR  := ./cfg
 BUILDDIR := ./build
-DEPDIR   := ./.dep
+DEPDIR   := $(BUILDDIR)/.dep
 
 # Licensing files.
 include $(CHIBIOS)/os/license/license.mk
@@ -173,10 +173,10 @@ UADEFS =
 UINCDIR =
 
 # List the user directory to look for the libraries here
-ULIBDIR =
+ULIBDIR = 
 
 # List all user libraries here
-ULIBS =
+ULIBS = CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
 
 #
 # End of user section

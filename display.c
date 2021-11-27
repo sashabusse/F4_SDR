@@ -1,5 +1,8 @@
 #include "display.h"
 
+#define __FPU_PRESENT
+#include "CMSIS/DSP/Include/arm_math.h"
+
 void draw_spectrogram(void)
 {
     q31_t *buf = spdispinfo.buffer;
