@@ -130,7 +130,11 @@ CSRC = $(ALLCSRC) \
        ili9341/ili9341_hw.c \
        ili9341/ili9341_gfx.c \
        usb_shell/usb_shell.c \
-       usb_shell/usbcfg.c 
+       usb_shell/usbcfg.c \
+       ili9341/bitmaps/Font5x7.c \
+       ili9341/bitmaps/icons.c \
+       ili9341/bitmaps/numfont20x24.c \
+       ili9341/bitmaps/numfont32x24.c 
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.

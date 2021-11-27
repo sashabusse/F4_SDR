@@ -55,8 +55,7 @@ int main(void)
 
   ili9341_init(&ili9341_driver);
 
-  ili9341_fill_rect(&ili9341_driver, 0x001F, 0, 0, 40, 40);
-  ili9341_fill_rect(&ili9341_driver, __ILI9341_COLOR565(0xFFFF, 0, 0), 40, 0, 40, 40);
+  ili9341_draw_font_string(&ili9341_driver, "012345", &NF20x24, 0, 0, 0xFFFF, 0x0000);
   // -------------------------------------------------------------------------------
 
   // Starts the LED blinker thread.
