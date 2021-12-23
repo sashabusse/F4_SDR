@@ -8,8 +8,8 @@
  * @param hw 
  */
 
-// common buffer for spi operations 
-uint16_t ili9341_spi_buffer[4096];
+// common buffer for spi operations
+uint16_t ili9341_spi_buffer[ILI9341_SPI_BUF_SZ];
 
 void ili9341_hard_reset(ili9341 *inst)
 {

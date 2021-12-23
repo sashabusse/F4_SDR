@@ -7,12 +7,12 @@ void ili9341_hw_init(ili9341_hw_cfg *hw)
     hw->_dcfg.ssport = hw->nss_port;
     hw->_dcfg.sspad = hw->nss_pin;
     hw->_dcfg.cr1 = (0 << SPI_CR1_BIDIMODE_Pos) |
-                    (0 << SPI_CR1_CRCEN_Pos) | 
+                    (0 << SPI_CR1_CRCEN_Pos) |
                     (0 << SPI_CR1_DFF_Pos) |
                     (1 << SPI_CR1_SSM_Pos) |
                     (1 << SPI_CR1_SSI_Pos) |
                     (0 << SPI_CR1_LSBFIRST_Pos) |
-                    (3 << SPI_CR1_BR_Pos) |
+                    (ILI9341_HW_SPI_BR << SPI_CR1_BR_Pos) |
                     (1 << SPI_CR1_MSTR_Pos) |
                     (0 << SPI_CR1_CPOL_Pos) |
                     (0 << SPI_CR1_CPHA_Pos);

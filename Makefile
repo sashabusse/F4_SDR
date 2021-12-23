@@ -126,6 +126,7 @@ LDSCRIPT= $(STARTUPLD)/STM32F411xE.ld
 CSRC = $(ALLCSRC) \
        $(TESTSRC) \
        main.c \
+       blinky_thd.c \
        ili9341/ili9341.c \
        ili9341/ili9341_hw.c \
        ili9341/ili9341_gfx.c \
@@ -134,7 +135,12 @@ CSRC = $(ALLCSRC) \
        ili9341/bitmaps/Font5x7.c \
        ili9341/bitmaps/icons.c \
        ili9341/bitmaps/numfont20x24.c \
-       ili9341/bitmaps/numfont32x24.c 
+       ili9341/bitmaps/numfont32x24.c \
+       ui/ui.c \
+       ui/ui_input.c \
+       ui/ui_draw.c \
+       ui/ui_hw.c \
+       math_util.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -147,7 +153,7 @@ ASMSRC = $(ALLASMSRC)
 ASMXSRC = $(ALLXASMSRC)
 
 # Inclusion directories.
-INCDIR = $(CONFDIR) $(ALLINC) $(TESTINC) ili9341 usb_shell
+INCDIR = $(CONFDIR) $(ALLINC) $(TESTINC) ili9341 usb_shell ui
 
 # Define C warning options here.
 CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes
@@ -176,7 +182,7 @@ UINCDIR =
 ULIBDIR = 
 
 # List all user libraries here
-ULIBS = CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
+ULIBS = CMSIS/Lib/GCC/libarm_cortexM4lf_math.a -lm
 
 #
 # End of user section

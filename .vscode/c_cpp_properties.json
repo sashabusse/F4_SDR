@@ -9,9 +9,11 @@
                 "ARM_MATH_CM4"
             ],
             "includePath": [
+                "./",
                 "./cfg",
                 "ili9341",
                 "usb_shell",
+                "ui",
                 "ChibiOS/os/license",
                 "ChibiOS/os/common/portability/GCC",
                 "ChibiOS/os/common/startup/ARMCMx/compilers/GCC",

@@ -11,7 +11,7 @@
 #include "ili9341_gfx.h"
 
 // common buffer for spi operations
-extern uint16_t ili9341_spi_buffer[4096];
+extern uint16_t ili9341_spi_buffer[ILI9341_SPI_BUF_SZ];
 
 void ili9341_set_address_rect(ili9341 *inst, uint16_t x0, uint16_t y0, uint16_t w, uint16_t h)
 {
@@ -37,17 +37,20 @@ void ili9341_set_address_rect(ili9341 *inst, uint16_t x0, uint16_t y0, uint16_t 
     ili9341_hw_unselect(&(inst->hw));
 }
 
-uint16_t spi_tx_block[80 * 80];
-void ili9341_fill_rect(ili9341 *inst, uint16_t color,
-                       int16_t x, int16_t y, uint16_t w, uint16_t h)
+void ili9341_fill_rect(ili9341 *inst, int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t color)
 {
     uint32_t pix_cnt = w * h;
+    uint32_t spi_buf_sz = sizeof(ili9341_spi_buffer) / sizeof(ili9341_spi_buffer[0]);
+    uint16_t full_spi_blk_cnt = pix_cnt / spi_buf_sz;
+    uint16_t pix_remain = pix_cnt % spi_buf_sz;
 
-    // fill entire block with ordered color data
-    uint16_t color_le = __LEu16(&color);
-    for (uint16_t i = 0; i < pix_cnt; ++i)
+    uint32_t spi_fill_cnt = pix_remain;
+    if (full_spi_blk_cnt > 0)
+        spi_fill_cnt = spi_buf_sz;
+
+    for (uint32_t i = 0; i < spi_fill_cnt; ++i)
     {
-        spi_tx_block[i] = color_le;
+        ili9341_spi_buffer[i] = color;
     }
 
     // select target region
@@ -56,7 +59,11 @@ void ili9341_fill_rect(ili9341 *inst, uint16_t color,
     ili9341_hw_select(&(inst->hw));
     ili9341_hw_dc_data(&(inst->hw));
 
-    ili9341_hw_spi_send_sync(&(inst->hw), (uint8_t *)spi_tx_block, pix_cnt * 2, false);
+    for (uint32_t i = 0; i < full_spi_blk_cnt; ++i)
+        ili9341_hw_spi_send_sync(&(inst->hw), (uint8_t *)ili9341_spi_buffer, spi_buf_sz * 2 /*16 bit colors*/, false);
+
+    // send remaining part
+    ili9341_hw_spi_send_sync(&(inst->hw), (uint8_t *)ili9341_spi_buffer, pix_remain * 2 /*16 bit colors*/, false);
 
     ili9341_hw_unselect(&(inst->hw));
 }
@@ -73,7 +80,7 @@ void ili9341_draw_map(ili9341 *inst, int x, int y, int w, int h, uint16_t *map)
     ili9341_hw_unselect(&(inst->hw));
 }
 
-void ili9341_drawchar_5x7(ili9341 *inst, uint8_t ch, int x, int y, uint16_t fg_col, uint16_t bg_col)
+void ili9341_draw_char_5x7(ili9341 *inst, uint8_t ch, int x, int y, uint16_t fg_col, uint16_t bg_col)
 {
     uint16_t *buf = ili9341_spi_buffer;
     uint16_t bits;
@@ -90,11 +97,11 @@ void ili9341_drawchar_5x7(ili9341 *inst, uint8_t ch, int x, int y, uint16_t fg_c
     ili9341_draw_map(inst, x, y, 5, 7, ili9341_spi_buffer);
 }
 
-void ili9341_drawstring_5x7(ili9341 *inst, const char *str, int x, int y, uint16_t fg_col, uint16_t bg_col)
+void ili9341_draw_string_5x7(ili9341 *inst, const char *str, int x, int y, uint16_t fg_col, uint16_t bg_col)
 {
     while (*str)
     {
-        ili9341_drawchar_5x7(inst, *str, x, y, fg_col, bg_col);
+        ili9341_draw_char_5x7(inst, *str, x, y, fg_col, bg_col);
         x += 5;
         str++;
     }

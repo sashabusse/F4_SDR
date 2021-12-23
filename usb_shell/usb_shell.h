@@ -4,6 +4,6 @@
 #define SHELL_WA_SIZE THD_WORKING_AREA_SIZE(512)
 
 void usb_shell_init(void);
-void usb_shell_poll_usb(void);
+void usb_shell_start(void);
 
 #endif

@@ -4,6 +4,21 @@
 #include "hal.h"
 #include "ch.h"
 
+/**
+ * @brief spi baud rate
+ *          (not sure i rememberd right) 
+ *          max by datasheet is 16 MHz
+ *          overclocking is common thing for this driver
+ *   
+ *          got mine working on 24 MHz
+ *          (this hw implementation expects core clk of 96 MHz and prescaler of 2)
+ */
+#define ILI9341_HW_SPI_BR_48 0
+#define ILI9341_HW_SPI_BR_24 1
+#define ILI9341_HW_SPI_BR_12 2
+
+#define ILI9341_HW_SPI_BR ILI9341_HW_SPI_BR_24
+
 typedef struct ili9341_hw_cfg
 {
     SPIDriver *pSPID;

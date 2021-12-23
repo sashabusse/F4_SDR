@@ -3,6 +3,7 @@
 #include "ch.h"
 #include "hal.h"
 #include "shell.h"
+#include "chprintf.h"
 #include "usbcfg.h"
 
 static const ShellCommand commands[] = {
@@ -26,13 +27,13 @@ void usb_shell_init(void)
     usbConnectBus(serusbcfg.usbp);
 }
 
-void usb_shell_poll_usb(void)
+void usb_shell_start(void)
 {
-    while (SDU1.config->usbp->state == USB_ACTIVE)
+    while (!(SDU1.config->usbp->state == USB_ACTIVE))
     {
-        thread_t *shelltp = chThdCreateFromHeap(NULL, SHELL_WA_SIZE,
-                                                "shell", NORMALPRIO + 1,
-                                                shellThread, (void *)&shell_cfg1);
-        chThdWait(shelltp);
     }
+
+    thread_t *shelltp = chThdCreateFromHeap(NULL, SHELL_WA_SIZE,
+                                            "shell", NORMALPRIO + 1,
+                                            shellThread, (void *)&shell_cfg1);
 }
